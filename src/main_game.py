@@ -1,6 +1,7 @@
 import pygame
 from global_variables import *
- 
+
+pygame.font.init()
 pygame.init()
  
 pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
