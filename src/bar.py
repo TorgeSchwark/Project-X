@@ -86,9 +86,27 @@ class Bar:
         else:
             raise IndexError(f"Number {index} is out of range for elements at position {position}.")
 
-    def scrolling(self, amount):#
-        print("yes")
-        self.scroll_offset = max(0, self.scroll_offset+amount)
+
+    def scrolling(self, amount):
+        if len(self.elements["scrollable"])<=0:
+            pass
+        elif self.axis == "H":
+            last_elem = self.elements["scrollable"][len(self.elements["scrollable"])-1].rect
+            first_elem = self.elements["scrollable"][0].rect
+            x_right = last_elem.x + last_elem.width
+            x_left = first_elem.x
+            max_val = (x_right-x_left) -self.clip_rec.width
+            temp = max(min(max_val, self.scroll_offset+amount),0)
+            self.scroll_offset = temp
+        else:
+            last_elem = self.elements["scrollable"][len(self.elements["scrollable"])-1].rect
+            first_elem = self.elements["scrollable"][0].rect
+            y_right = last_elem.y + last_elem.height
+            y_left = first_elem.y
+            max_val = (y_right-y_left) -self.clip_rec.height
+            temp = max(min(max_val, self.scroll_offset+amount),0)
+            self.scroll_offset = temp
+        
 
     def is_clicked_left(self):
         mouse_pos = pygame.mouse.get_pos()  

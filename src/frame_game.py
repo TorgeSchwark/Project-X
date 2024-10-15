@@ -4,13 +4,20 @@ from bar import *
 class FrameGame:
     def __init__(self):
         
-        self.setup_frame()
         self.left_mouse_button_pressed = False
+        self.base_ui = None
+        self.games_buttons = None
+        self.base_game_ui()
+        self.setup_frame()
 
+
+    def base_game_ui(self):
+        width = WINDOW_WIDTH/20
+        self.base_ui = Bar(WINDOW_WIDTH-width, 0, width, WINDOW_HEIGHT, True, True, "V", (50,50,50), BAR_STYLE_ONE)
 
 
     def setup_frame(self):
-        games_button_position = [0.1,0.05,0.7,0.15]
+        games_button_position = [0.1,0.1,0.7,0.15]
 
         self.games_buttons = Bar(WINDOW_WIDTH*games_button_position[0], WINDOW_HEIGHT*games_button_position[1], WINDOW_WIDTH*games_button_position[2],WINDOW_HEIGHT*games_button_position[3], True, True, "H",(100,100,100), BAR_STYLE_ONE)
         self.games_buttons.add_button("scrollable", "1st game")
@@ -53,3 +60,4 @@ class FrameGame:
 
     def draw(self, screen):
         self.games_buttons.draw(screen)
+        self.base_ui.draw(screen)

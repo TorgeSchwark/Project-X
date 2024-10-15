@@ -7,7 +7,8 @@ from frame_game import *
 pygame.font.init()
 pygame.init()
 clock = pygame.time.Clock()
- 
+if []:
+    print()
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
  
 pygame.display.set_caption('Project-X')
