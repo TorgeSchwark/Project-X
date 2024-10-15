@@ -1,5 +1,6 @@
 from button import *
 from bar import * 
+from Flipper.flipper import *
 
 class FrameGame:
     def __init__(self):
@@ -10,6 +11,9 @@ class FrameGame:
         self.base_game_ui()
         self.setup_frame()
 
+        self.current_game = "frame_game"
+        self.games = {"flipper": Flipper()}
+
 
     def base_game_ui(self):
         width = WINDOW_WIDTH/22
@@ -19,7 +23,7 @@ class FrameGame:
 
 
     def setup_frame(self):
-        games_button_position = [0.1,0.1,0.7,0.15]
+        games_button_position = [0.1,0.03,0.7,0.15]
 
         self.games_buttons = Bar(WINDOW_WIDTH*games_button_position[0], WINDOW_HEIGHT*games_button_position[1], WINDOW_WIDTH*games_button_position[2],WINDOW_HEIGHT*games_button_position[3], True, True, "H",(100,100,100), BAR_STYLE_ONE)
         self.games_buttons.add_button("scrollable", "1st game")
@@ -38,9 +42,12 @@ class FrameGame:
     # only function that is called from the main loop
     # handles Whjich elements need to be drawn applies physics etc
     def manager(self, screen, events):
-        self.draw(screen)
-
-        self.manage_inputs(events)
+        if self.current_game == "frame_game":
+            self.draw(screen)
+            self.manage_inputs(events)
+        elif self.current_game == "flipper":
+            self.games[self.current_game].draw(screen)
+            self.games[self.current_game].manage_inputs(events)
 
 
     def manage_inputs(self, events):
