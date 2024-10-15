@@ -3,20 +3,22 @@ from button import *
 
 class Bar:
 
-    def __init__(self, x, y, width, height, permanent, scrollable, axis, color):
+    # for styles example look at global variables BAR_STYLE_ONE
+    def __init__(self, x, y, width, height, permanent, scrollable, axis, color, styles):
         
         self.color = color
         self.axis = axis # "H / V"
         self.elements = {"top": [], "scrollable": [], "bottom": []}
-        
-        style = {"size": 100, "fill_size": 0.8, "color": (50,50,50), "hover_color": (200,200,200), "text_color": (100,100,100), "text_size": 20, "spacing": 10}
-        self.element_style = {"top": style.copy(), "scrollable" : style.copy(), "bottom": style.copy()}
+
+        self.element_style = styles
         self.y = y
         self.x = x
         self.width = width
         self.height = height
         self.permanent = permanent
         self.scrollable = scrollable # ?? 
+        #cutoff for the scrolable elements
+        self.clip_rec = pygame.Rect(x, y, width, height)
         # Rect that represents the bar area
         self.rect = pygame.Rect(x, y, width, height)
         
@@ -29,7 +31,7 @@ class Bar:
         self.scroll_offset = 0
 
     # self, text, x, y, width, height, color, hover_color, text_color, text_size
-    def add_button(self, position, text):
+    def add_button(self, position, text=""):
         color = self.element_style[position]["color"]
         hover_color =  self.element_style[position]["hover_color"]
         text_color = self.element_style[position]["text_color"]
@@ -77,11 +79,27 @@ class Bar:
                 self.scrollable_cords[1] -= (height + self.element_style[position]["spacing"])
 
         self.elements[position].append(button)
-                
+    
+    def set_button_frame_image(self, image, position, index):
+        if len(self.elements[position]) > index:
+            self.elements[position][index].set_frame_image(image)
+        else:
+            raise IndexError(f"Number {index} is out of range for elements at position {position}.")
 
-    def scrolling(self, amount):
+    def scrolling(self, amount):#
+        print("yes")
         self.scroll_offset = max(0, self.scroll_offset+amount)
-        
+
+    def is_clicked_left(self):
+        mouse_pos = pygame.mouse.get_pos()  
+        mouse_button = pygame.mouse.get_pressed() 
+
+        if mouse_button[0]: 
+            if self.clip_rec.collidepoint(mouse_pos):
+                for pos in self.elements:
+                    for button in self.elements[pos]:
+                        button.is_clicked_left()
+
              
     def draw(self, screen):
 
@@ -99,7 +117,12 @@ class Bar:
             width = self.scrollable_cords[1]- self.scrollable_cords[0]
             clip_rect = pygame.Rect(self.scrollable_cords[0], self.y, width, self.height)
 
+        self.clip_rec = clip_rect
         screen.set_clip(clip_rect)
+
+        # is the mouse inside the clipped rect?
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_inside_clip = clip_rect.collidepoint(mouse_pos)
         
         # Draw middle (scrollable) elements
         temp_storage = 0
@@ -110,7 +133,7 @@ class Bar:
 
                 # draw and clip objects that are inside
                 if obj.rect.bottom > self.y and obj.rect.top < self.y + self.height:
-                    obj.draw(screen)
+                    obj.draw(screen, mouse_inside_clip)
 
                 temp_size += obj.rect.height
                 temp_storage = obj.rect.y
@@ -119,7 +142,7 @@ class Bar:
                 
                 # draw and clip objects that are inside
                 if obj.rect.right > self.x and obj.rect.left < self.x + self.width:
-                    obj.draw(screen)
+                    obj.draw(screen, mouse_inside_clip)
                 
                 temp_size += obj.rect.width
                 temp_storage = obj.rect.x
