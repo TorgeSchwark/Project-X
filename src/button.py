@@ -33,16 +33,19 @@ class Button:
         if self.frame_image != None:
             screen.blit(self.frame_image, (self.rect.x, self.rect.y)) 
 
-    def set_function(self, activity):
-        self.function = activity
+    
 
     def set_frame_image(self, image):
         self.frame_image =  pygame.transform.scale(pygame.image.load(image), (self.rect.width, self.rect.height))
+
+    def set_function(self, function):
+        self.function = function
 
     def is_clicked_left(self):
         mouse_pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]: # Left click
-                print("is clicked")
+                print("here")
                 if self.function != None:
-                    self.function
+                    print("here as well")
+                    self.function()

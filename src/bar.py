@@ -86,6 +86,11 @@ class Bar:
         else:
             raise IndexError(f"Number {index} is out of range for elements at position {position}.")
 
+    def set_function(self, function, position, index):
+        if len(self.elements[position]) > index:
+            self.elements[position][index].set_function(function)
+        else:
+            raise IndexError(f"Number {index} is out of range for elements at position {position}.")
 
     def scrolling(self, amount):
         if len(self.elements["scrollable"])<=0:
@@ -107,7 +112,6 @@ class Bar:
             temp = max(min(max_val, self.scroll_offset+amount),0)
             self.scroll_offset = temp
         
-
     def is_clicked_left(self):
         mouse_pos = pygame.mouse.get_pos()  
         mouse_button = pygame.mouse.get_pressed() 
@@ -117,7 +121,6 @@ class Bar:
                 for pos in self.elements:
                     for button in self.elements[pos]:
                         button.is_clicked_left()
-
              
     def draw(self, screen):
 
