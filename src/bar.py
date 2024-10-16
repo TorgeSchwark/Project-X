@@ -90,9 +90,9 @@ class Bar:
             raise IndexError(f"Number {index} is out of range for elements at position {position}.")
 
     def scrolling(self, amount):
-        # only when active and if elements are inside
-        if len(self.elements["scrollable"])<=0 and not self.active:
-            pass
+        # only when active and it has elements and the mouse is inside bar
+        if len(self.elements["scrollable"])<=0 or not self.active or not self.clip_rec.collidepoint(pygame.mouse.get_pos()):
+            return
         elif self.axis == "H":
             last_elem = self.elements["scrollable"][len(self.elements["scrollable"])-1].rect
             first_elem = self.elements["scrollable"][0].rect
@@ -113,15 +113,16 @@ class Bar:
     def is_clicked_left(self):
         # only when its active
         if not self.active: 
-            return
+            return        
         mouse_pos = pygame.mouse.get_pos()  
         mouse_button = pygame.mouse.get_pressed() 
-
         if mouse_button[0]: 
-            if self.clip_rec.collidepoint(mouse_pos):
-                for pos in self.elements:
+            for pos in self.elements:
+                if self.clip_rec.collidepoint(mouse_pos) or pos != "scrollable":
                     for button in self.elements[pos]:
                         button.is_clicked_left()
+            
+                
              
     def draw(self, screen):
         # only when its active
