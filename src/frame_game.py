@@ -45,7 +45,7 @@ class FrameGame:
 
     def base_game_ui(self):
         width = self.window_size[0]/22
-        self.base_ui = Bar(self.window_size[0]-width, 0, width, self.window_size[1], "V", (50,50,50), BAR_STYLE_ONE)
+        self.base_ui = Bar(self.window_size[0]-width+1, 0, width, self.window_size[1], "V", (50,50,50), BAR_STYLE_ONE)
         self.base_ui.add_button("bottom", "Setttings")
         self.base_ui.add_button("top", "Upgrades")
         self.base_ui.add_button("top", "Games")
@@ -58,8 +58,12 @@ class FrameGame:
 
     def setup_frame(self):
         games_button_position = [0.1,0.03,0.7,0.15]
+        width = self.window_size[0]/7
+        height = self.window_size[1]
+        x = self.base_ui.rect.x - width + 1
+        y = 0
 
-        self.games_buttons = Bar(self.window_size[0]*games_button_position[0], self.window_size[1]*games_button_position[1], self.window_size[0]*games_button_position[2],self.window_size[1]*games_button_position[3], "H",(100,100,100), BAR_STYLE_ONE)
+        self.games_buttons = Bar(x, y, width, height, "V",(100,100,100), BAR_STYLE_ONE)
         self.games_buttons.add_button("scrollable", "1st game")
         self.games_buttons.set_button_frame_image("./src/Images/game_frame_gold.png","scrollable", 0)
         self.games_buttons.set_function(self.play_flipper, "scrollable", 0)
