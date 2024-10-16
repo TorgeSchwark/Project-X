@@ -4,7 +4,7 @@ from button import *
 class Bar:
 
     # for styles example look at global variables BAR_STYLE_ONE
-    def __init__(self, x, y, width, height, permanent, scrollable, axis, color, styles):
+    def __init__(self, x, y, width, height, axis, color, styles, active=True):
         
         self.color = color
         self.axis = axis # "H / V"
@@ -15,18 +15,15 @@ class Bar:
         self.x = x
         self.width = width
         self.height = height
-        self.permanent = permanent
-        self.scrollable = scrollable # ?? 
+        self.active = active
         #cutoff for the scrolable elements
         self.clip_rec = pygame.Rect(x, y, width, height)
         # Rect that represents the bar area
         self.rect = pygame.Rect(x, y, width, height)
-        
         if axis == "H":
             self.scrollable_cords = [x + self.element_style["top"]["spacing"], x + width - self.element_style["bottom"]["spacing"], 0, 0] 
         else:
             self.scrollable_cords = [y + self.element_style["top"]["spacing"], y + height - self.element_style["bottom"]["spacing"], 0, 0]
-
         # Scroll position
         self.scroll_offset = 0
 
@@ -44,17 +41,17 @@ class Bar:
             if position == "top":
                 x_pos = self.scrollable_cords[0]
                 button = Button(text, x_pos, y_pos, width, height, color, \
-                                 hover_color, text_color, text_size)
+                                 hover_color, text_color, text_size, self.active)
                 self.scrollable_cords[0] += width + self.element_style[position]["spacing"]
                 
             if position == "scrollable":
                 x_pos = self.scrollable_cords[2]+ self.element_style[position]["spacing"]+ self.element_style[position]["size"]
                 button = Button(text, x_pos, y_pos, width, height, color, \
-                                 hover_color, text_color, text_size)
+                                 hover_color, text_color, text_size, self.active)
             if position == "bottom":
                 x_pos = self.scrollable_cords[1]-self.element_style[position]["size"]
                 button = Button(text, x_pos, y_pos, width, height, color, \
-                                 hover_color, text_color, text_size)
+                                 hover_color, text_color, text_size, self.active)
                 self.scrollable_cords[1] -= (width + self.element_style[position]["spacing"])
             
                 
@@ -65,17 +62,17 @@ class Bar:
             if position == "top": 
                 y_pos = self.scrollable_cords[0]
                 button = Button(text, x_pos, y_pos, width, height, color, \
-                                 hover_color, text_color, text_size)
+                                 hover_color, text_color, text_size, self.active)
                 self.scrollable_cords[0] += height + self.element_style[position]["spacing"]
 
             if position == "scrollable":
                 y_pos = self.scrollable_cords[2]+ self.element_style[position]["spacing"]+ self.element_style[position]["size"]
                 button = Button(text, x_pos, y_pos, width, height, color, \
-                                 hover_color, text_color, text_size)
+                                 hover_color, text_color, text_size, self.active)
             if position == "bottom":
                 y_pos = self.scrollable_cords[1]-self.element_style[position]["size"]
                 button = Button(text, x_pos, y_pos, width, height, color, \
-                                 hover_color, text_color, text_size)
+                                 hover_color, text_color, text_size, self.active)
                 self.scrollable_cords[1] -= (height + self.element_style[position]["spacing"])
 
         self.elements[position].append(button)
@@ -93,7 +90,8 @@ class Bar:
             raise IndexError(f"Number {index} is out of range for elements at position {position}.")
 
     def scrolling(self, amount):
-        if len(self.elements["scrollable"])<=0:
+        # only when active and if elements are inside
+        if len(self.elements["scrollable"])<=0 and not self.active:
             pass
         elif self.axis == "H":
             last_elem = self.elements["scrollable"][len(self.elements["scrollable"])-1].rect
@@ -113,6 +111,9 @@ class Bar:
             self.scroll_offset = temp
         
     def is_clicked_left(self):
+        # only when its active
+        if not self.active: 
+            return
         mouse_pos = pygame.mouse.get_pos()  
         mouse_button = pygame.mouse.get_pressed() 
 
@@ -123,7 +124,10 @@ class Bar:
                         button.is_clicked_left()
              
     def draw(self, screen):
-
+        # only when its active
+        if not self.active: 
+            return
+        
         pygame.draw.rect(screen, self.color, self.rect)
 
         # Save the original clipping area
@@ -181,3 +185,15 @@ class Bar:
         # Draw bottom (permament) elements
         for obj in self.elements["bottom"]:
             obj.draw(screen)
+
+    def deactivate(self):
+        self.active = False
+        for key in self.elements:
+            for obj in self.elements[key]:
+                obj.active = False
+
+    def activate(self):
+        self.active = True
+        for key in self.elements:
+            for obj in self.elements[key]:
+                obj.active = True

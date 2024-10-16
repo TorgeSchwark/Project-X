@@ -38,7 +38,6 @@ while running:
     clock.tick(60)
     screen.fill(BACKGROUND_COLOR)
     frame_game.manager(screen, events)
-    # bar.draw(screen)
-    #but.draw(screen)
+
 
     pygame.display.update()
