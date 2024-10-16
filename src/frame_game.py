@@ -13,7 +13,7 @@ class FrameGame:
         self.setup_frame()
 
         self.current_game = "frame_game"
-        self.games = {"flipper": Flipper(size)}
+        self.games = {"frame_game": self, "flipper": Flipper(size), "settings": None}
 
 
     def base_game_ui(self):
@@ -45,13 +45,8 @@ class FrameGame:
     # only function that is called from the main loop
     # handles Whjich elements need to be drawn applies physics etc
     def manager(self, screen, events):
-        if self.current_game == "frame_game":
-            self.draw(screen)
-            self.manage_inputs(events)
-        elif self.current_game == "flipper":
-            self.games[self.current_game].applie_physics()
-            self.games[self.current_game].draw(screen)
-            self.games[self.current_game].manage_inputs(events)
+        self.games[self.current_game].draw(screen)
+        self.games[self.current_game].manage_inputs(events)
 
 
     def manage_inputs(self, events):

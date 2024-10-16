@@ -13,9 +13,9 @@ class Flipper:
 
 
     def manage_inputs(self, events):
-        pass
+        self.apply_physics()
 
-    def applie_physics(self):
+    def apply_physics(self):
         self.ball.apply_physics()
         
     def draw(self, screen):
