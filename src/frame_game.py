@@ -17,9 +17,9 @@ class FrameGame:
 
 
     def base_game_ui(self):
-        width = self.window_size[0]/20
+        width = self.window_size[0]/22
         self.base_ui = Bar(self.window_size[0]-width, 0, width, self.window_size[1], True, True, "V", (50,50,50), BAR_STYLE_ONE)
-
+        self.base_ui.add_button("bottom", "Setttings")
 
     def setup_frame(self):
         games_button_position = [0.1,0.03,0.7,0.15]

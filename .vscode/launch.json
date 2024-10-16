@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Main",
+            "type": "debugpy",  // Neue Einstellung
+            "request": "launch",
+            "program": "${workspaceFolder}/src/main_game.py",
+            "console": "integratedTerminal",
+            "justMyCode": true // Setze dies, um es ohne Debugging auszuführen
+        }
+    ]
+}
