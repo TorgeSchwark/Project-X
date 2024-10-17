@@ -1,14 +1,18 @@
 from button import *
 from bar import * 
 from Flipper.flipper import *
+from dropout_selection import *
 
 class FrameGame:
     def __init__(self, size):
         
         self.window_size = size
         self.left_mouse_button_pressed = False
+
         self.base_ui = None
         self.games_buttons = None
+        self.settings_menu = None
+
         self.current_game = "frame_game"
         self.games = {"frame_game": self, "flipper": Flipper(size), "settings": self}
         self.to_draw = []
@@ -16,6 +20,11 @@ class FrameGame:
 
         self.base_game_ui()
         self.setup_frame()
+
+        # test
+        test = DropoutSelection("Test", 20, 20, 100, 100, (100,100,100), (200,200,200), (255,255,255), 20, ["Option 1", "Option 2", "Option 3"])
+        self.to_draw.append(test)
+        self.active.append(test)
 
     # only function that is called from the main loop
     # handles Whjich elements need to be drawn applies physics etc
@@ -80,6 +89,9 @@ class FrameGame:
         self.games_buttons.deactivate()
         
 
+    def setup_settings(self):
+        pass
+
     def display_games(self):
         if self.games_buttons in self.to_draw:
             self.to_draw.remove(self.games_buttons)
@@ -89,6 +101,16 @@ class FrameGame:
             self.to_draw.append(self.games_buttons)
             self.active.append(self.games_buttons)
             self.games_buttons.activate()
+
+    def display_settings(self):
+        if self.settings_menu in self.to_draw:
+            self.to_draw.remove(self.settings_menu)
+            self.active.remove(self.settings_menu)
+            self.settings_menu.deactivate()
+        else:
+            self.to_draw.append(self.settings_menu)
+            self.active.append(self.settings_menu)
+            self.settings_menu.activate()
 
     def play_flipper(self):
         self.current_game = "flipper"
