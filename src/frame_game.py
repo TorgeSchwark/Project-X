@@ -2,6 +2,7 @@ from button import *
 from bar import * 
 from Flipper.flipper import *
 from dropout_selection import *
+from settings import *
 
 class FrameGame:
     def __init__(self, size):
@@ -20,11 +21,12 @@ class FrameGame:
 
         self.base_game_ui()
         self.setup_frame()
+        self.setup_settings()
 
         # test
-        test = DropoutSelection("Test", 20, 20, 100, 100, (100,100,100), (200,200,200), (255,255,255), 20, ["Option 1", "Option 2", "Option 3"])
-        self.to_draw.append(test)
-        self.active.append(test)
+        # test = DropoutSelection(20, 20, 100, 50, (100,100,100), (200,200,200), (255,255,255), 20, ["Option 1", "Option 2", "Option 3"], 30, True, "Option 1", "Test:", (255,255,255), 100)
+        # self.to_draw.append(test)
+        # self.active.append(test)
 
     # only function that is called from the main loop
     # handles Whjich elements need to be drawn applies physics etc
@@ -56,6 +58,7 @@ class FrameGame:
         width = self.window_size[0]/22
         self.base_ui = Bar(self.window_size[0]-width+1, 0, width, self.window_size[1], "V", (50,50,50), BAR_STYLE_ONE)
         self.base_ui.add_button("bottom", "Setttings")
+        self.base_ui.set_function(self.display_settings, "bottom", 0)
         self.base_ui.add_button("top", "Upgrades")
         self.base_ui.add_button("top", "Games")
         self.base_ui.set_function(self.display_games , "top", 1)
@@ -90,7 +93,8 @@ class FrameGame:
         
 
     def setup_settings(self):
-        pass
+        width = self.window_size[0] - self.base_ui.rect.width
+        self.settings_menu = Settings(0,0, width, self.window_size[1], (100,100,100), (255,255,255), 20, False)
 
     def display_games(self):
         if self.games_buttons in self.to_draw:
