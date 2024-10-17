@@ -41,6 +41,9 @@ class FrameGame:
 
     def play_flipper(self):
         self.current_game = "flipper"
+        self.window_size = (self.window_size[0]/16*7,self.window_size[1])
+        self.games["flipper"].set_window_size(self.window_size)
+        pygame.display.set_mode(self.window_size)
 
     # only function that is called from the main loop
     # handles Whjich elements need to be drawn applies physics etc
