@@ -76,7 +76,7 @@ class Flipper:
         else:
             self.right_key_pressed = False 
 
-    def applie_physics(self):
+    def apply_physics(self):
         
         ball_next = [self.main_objects["ball"].x+self.main_objects["ball"].direction[0], self.main_objects["ball"].y +self.main_objects["ball"].direction[1]]
         ball_current = [self.main_objects["ball"].x, self.main_objects["ball"].y]
