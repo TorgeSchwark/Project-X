@@ -18,6 +18,7 @@ class FrameGame:
         self.games = {"frame_game": self, "flipper": Flipper(size), "settings": self}
         self.to_draw = []
         self.active = []
+        self.save_todraw = []
 
         self.base_game_ui()
         self.setup_frame()
@@ -93,8 +94,7 @@ class FrameGame:
         
 
     def setup_settings(self):
-        width = self.window_size[0] - self.base_ui.rect.width
-        self.settings_menu = Settings(0,0, width, self.window_size[1], (100,100,100), (255,255,255), 20, False)
+        self.settings_menu = Settings(0,0, self.window_size[0], self.window_size[1], (100,100,100), (255,255,255), 20, self.save_settings, self.dismiss_settings, False)
 
     def display_games(self):
         if self.games_buttons in self.to_draw:
@@ -108,10 +108,11 @@ class FrameGame:
 
     def display_settings(self):
         if self.settings_menu in self.to_draw:
-            self.to_draw.remove(self.settings_menu)
-            self.active.remove(self.settings_menu)
+            self.reactivate_screen()
             self.settings_menu.deactivate()
         else:
+            self.save_todraw = self.to_draw
+            self.clear_screen()
             self.to_draw.append(self.settings_menu)
             self.active.append(self.settings_menu)
             self.settings_menu.activate()
@@ -121,6 +122,33 @@ class FrameGame:
         self.window_size = (self.window_size[0]/16*7,self.window_size[1])
         self.games["flipper"].set_window_size(self.window_size)
         pygame.display.set_mode(self.window_size)
+
+    def clear_screen(self):
+        # remove everthing exept the base ui
+        self.to_draw = [self.to_draw[0]]
+        for obj in self.active:
+                obj.deactivate()
+        self.active = [self.active[0]]
+
+    def reactivate_screen(self):
+        self.to_draw = self.save_todraw
+        self.active = self.save_todraw
+        for obj in self.active:
+            obj.activate()
+
+    def save_settings(self):
+        # save settings
+
+        print("Save settings")
+        self.reactivate_screen()
+        self.settings_menu.deactivate()
+
+    def dismiss_settings(self):
+        print("Dismiss settings")
+        # reset attributes?
+        self.reactivate_screen()
+        self.settings_menu.deactivate()
+        
 
     def draw(self, screen):
         for obj in self.to_draw:
