@@ -7,8 +7,6 @@ from frame_game import *
 pygame.font.init()
 pygame.init()
 clock = pygame.time.Clock()
-if []:
-    print()
     
 initial_window_width = 1600
 initial_window_height = 900
@@ -22,10 +20,6 @@ pygame.display.set_caption('Project-X')
 running = True
 
 fonts = pygame.font.get_fonts()
-# print(fonts)
-
-#but = Button("test", 300, 400, 100, 100, (255,255,255), (0,0,0), (100,100,100), 40)
-
 
 while running:
     # seems like this function can only be called once every itteration. otherwise buggy

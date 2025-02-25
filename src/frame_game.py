@@ -1,6 +1,5 @@
 from button import *
 from bar import * 
-from Flipper.flipper import *
 from dropout_selection import *
 from settings import *
 
@@ -15,7 +14,7 @@ class FrameGame:
         self.settings_menu = None
 
         self.current_game = "frame_game"
-        self.games = {"frame_game": self, "flipper": Flipper(size), "settings": self}
+        self.games = {"frame_game": self, "settings": self}
         self.to_draw = []
         self.active = []
         self.save_todraw = []
@@ -23,11 +22,6 @@ class FrameGame:
         self.base_game_ui()
         self.setup_frame()
         self.setup_settings()
-
-        # test
-        # test = DropoutSelection(20, 20, 100, 50, (100,100,100), (200,200,200), (255,255,255), 20, ["Option 1", "Option 2", "Option 3"], 30, True, "Option 1", "Test:", (255,255,255), 100)
-        # self.to_draw.append(test)
-        # self.active.append(test)
 
     # only function that is called from the main loop
     # handles Whjich elements need to be drawn applies physics etc
@@ -79,7 +73,6 @@ class FrameGame:
         self.games_buttons = Bar(x, y, width, height, "V",(100,100,100), BAR_STYLE_ONE)
         self.games_buttons.add_button("scrollable", "1st game")
         self.games_buttons.set_button_frame_image("./src/Images/game_frame_gold.png","scrollable", 0)
-        self.games_buttons.set_function(self.play_flipper, "scrollable", 0)
         self.games_buttons.add_button("scrollable", "2st game")
         self.games_buttons.set_button_frame_image("./src/Images/game_frame_diamond.png","scrollable", 1)
         self.games_buttons.add_button("scrollable", "3st game")
@@ -116,12 +109,6 @@ class FrameGame:
             self.to_draw.append(self.settings_menu)
             self.active.append(self.settings_menu)
             self.settings_menu.activate()
-
-    def play_flipper(self):
-        self.current_game = "flipper"
-        self.window_size = (self.window_size[0]/16*7,self.window_size[1])
-        self.games["flipper"].set_window_size(self.window_size)
-        pygame.display.set_mode(self.window_size)
 
     def clear_screen(self):
         # remove everthing exept the base ui
