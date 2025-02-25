@@ -39,9 +39,9 @@ class Settings:
 
         # Save and dismiss button
         self.bottom_bar.add_button("bottom", "Save")
-        self.bottom_bar.set_function(save_func, "bottom", 0)
+        self.bottom_bar.set_function(save_func,[], "bottom", 0)
         self.bottom_bar.add_button("bottom", "Dismiss")
-        self.bottom_bar.set_function(dismiss_func, "bottom", 1)
+        self.bottom_bar.set_function(dismiss_func,[], "bottom", 1)
         
 
     def draw(self,screen):

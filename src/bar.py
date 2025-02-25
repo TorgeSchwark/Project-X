@@ -83,9 +83,9 @@ class Bar:
         else:
             raise IndexError(f"Number {index} is out of range for elements at position {position}.")
 
-    def set_function(self, function, position, index):
+    def set_function(self, function, parameters, position, index):
         if len(self.elements[position]) > index:
-            self.elements[position][index].set_function(function)
+            self.elements[position][index].set_function(function, parameters)
         else:
             raise IndexError(f"Number {index} is out of range for elements at position {position}.")
 

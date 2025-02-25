@@ -12,6 +12,7 @@ class Button:
         self.text_size = text_size
 
         self.function = None
+        self.function_parameters = []
         self.active = active
 
         self.button_font = pygame.font.SysFont('arial', self.text_size)
@@ -41,8 +42,9 @@ class Button:
     def set_frame_image(self, image):
         self.frame_image =  pygame.transform.scale(pygame.image.load(image), (self.rect.width, self.rect.height))
 
-    def set_function(self, function):
+    def set_function(self, function, function_parameters):
         self.function = function
+        self.function_parameters = function_parameters
 
     def is_clicked_left(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -50,7 +52,5 @@ class Button:
             return
         elif self.rect.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]: # Left click
-                print("here")
                 if self.function != None:
-                    print("here as well")
-                    self.function()
+                    self.function(*self.function_parameters)
