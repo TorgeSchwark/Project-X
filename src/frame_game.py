@@ -27,8 +27,8 @@ class FrameGame:
     # only function that is called from the main loop
     # handles Whjich elements need to be drawn applies physics etc
     def manager(self, screen, events):
-        self.games[self.current_game_name].draw(screen)
         self.games[self.current_game_name].manage_inputs(events)
+        self.games[self.current_game_name].draw(screen)
 
 
     def manage_inputs(self, events):
@@ -96,6 +96,7 @@ class FrameGame:
         
     def change_game(self, game_name):
         self.current_game_name = game_name
+        print(self.window_size)
         self.games[self.current_game_name].activate_game(self.window_size)
         
 
